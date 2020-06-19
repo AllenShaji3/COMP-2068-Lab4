@@ -8,5 +8,23 @@ exports.new = (req, res) => {
     pageTitle: 'New Product'
   });
 };
+exports.create = async (req, res) => {
+console.log(`Product body: ${JSON.stringify(req.body,null,2)}`);
+try{
+  const product = await Product.create(req.body);
+  res.redirect(`/products/${product.id}`);
+}catch(err){
+  res.send(err);
+}
 
-exports.create = async (req, res) => {};
+};
+
+exports.show = async (req,res) => {
+  const product = await Product.findById(req.params.id);
+  res.render(`${viewPath}/show`,{
+    productName: product.eventNames,
+    productDescription: product.description,
+    productPrice: product.price
+  });
+}
+
